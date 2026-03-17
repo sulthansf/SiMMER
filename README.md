@@ -215,6 +215,23 @@ rosrun lmm_sc motor_controller.py    # Servo interface
 rosrun lmm_sc joy_incremental.py     # Joystick teleoperation
 ```
 
+### How joystick X/Y/Z controls the manipulator
+
+The joystick does **not** directly command servo angles. It commands small Cartesian increments of the end-effector position:
+
+1. `joy_node` publishes `sensor_msgs/Joy` on `/joy`.
+2. `joy_incremental.py` maps stick axes to XYZ increments:
+   - `axes[3]` (right stick X) → `Δx`
+   - `axes[4]` (right stick Y) → `Δy`
+   - `axes[1]` (left stick Y)  → `Δz`
+3. These are scaled and published as `Float32MultiArray` on `/lmm_incremental_inputs`.
+4. `master.py` subscribes to `/lmm_incremental_inputs`, updates target end-effector position `r_G_ee = r_G_ee + [Δx, Δy, Δz]`, and runs inverse kinematics.
+5. The resulting manipulator joint angles (`joint_m_1 ... joint_m_4`) are published in `lmm_joint_states`, which drives Gazebo/hardware controllers.
+
+So: **joystick X/Y/Z controls manipulator motion indirectly through end-effector Cartesian increments + IK**, not by manually setting each manipulator joint.
+
+If the new end-effector target would reduce manipulability too much, the redundancy resolver in `master.py` also moves the trunk and legs so the manipulator can keep following the joystick command safely.
+
 ---
 
 ## Package Details
