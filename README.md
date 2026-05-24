@@ -1,12 +1,11 @@
-# SiMMER (Legged Mobile Manipulator) - Project Documentation
+# SiMMER (Legged Mobile Manipulator)
 
-SiMMER is a ROS (catkin) project for a **6-legged mobile base with a manipulator**.  
-This repository contains:
+SiMMER is a ROS 1 (catkin) project for a **6-legged mobile base with a manipulator**. It contains two catkin packages:
 
-- `lmm_model`: robot description, meshes, controllers, and simulation launch files
+- `lmm_model`: robot description (URDF), meshes, Gazebo controllers, and simulation launch files
 - `lmm_sc`: supervisory control stack for real-time planning, joystick input handling, gait planning, redundancy resolution, and hardware servo output
 
-Originally documented as:
+Project background (from the original documentation):
 - Version: 1.1
 - Date: 26 February 2020
 - Core ideas: Adaptive Stroke Length, Full Cycle Planning, optimization-based solving (SciPy `fsolve`)
@@ -17,7 +16,7 @@ Originally documented as:
 
 ```
 SiMMER/
-├── Readme.txt
+├── README.md
 ├── lmm_model/
 │   ├── urdf/lmm.urdf
 │   ├── meshes/*.STL
@@ -41,7 +40,7 @@ SiMMER/
 
 ### System
 - Ubuntu with ROS 1 (catkin-based setup)
-- Python (ROS `rospy` scripts)
+- Python for ROS `rospy` nodes
 
 ### ROS packages used in this repository
 - `catkin`
